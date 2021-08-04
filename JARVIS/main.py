@@ -52,4 +52,4 @@ async def kospi(ctx, text):
 		await ctx.send(f"현재 {ctx.author.mention}님이 요청하신 기업에 대한 정보는 없습니다.")
 
 
-bot.run('ODcyMTUxMzQzODM2NTY1NTI0.YQlsPA.qGfEO2UuSY_ZBWyX9EMh9pFZAhA')
+bot.run('비공개')
