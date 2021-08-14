@@ -86,4 +86,4 @@ async def user_info(ctx, target: Optional[Member]):
 	
 	await ctx.send(embed=embed)
 
-bot.run('비공개')
+bot.run('')
