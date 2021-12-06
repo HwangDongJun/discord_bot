@@ -86,4 +86,70 @@ async def user_info(ctx, target: Optional[Member]):
 	
 	await ctx.send(embed=embed)
 
-bot.run('')
+@bot.command(aliases=['공지사항', '공지', '학교망해라'])
+async def university_info(ctx):
+	notice = list(); today_notice_count = 0
+	for offset in [0, 10, 20, 30, 40, 50]:
+		req = requests.get(f'https://computer.cnu.ac.kr/computer/notice/bachelor.do?mode=list&&articleLimit=10&article.offset={offset}')
+		html = req.text
+		soup = bs(html, "lxml")
+	
+		noticeContents = soup.select("tbody > tr")
+		for nc in noticeContents:
+			try:
+				if "공" in nc.select_one("td.b-num-box").text.strip():
+					notice_str = f'[공지] {nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip()}-{nc.select_one("td.b-td-left > div.b-title-box > a").text.strip()}'
+					if notice_str not in notice:
+						notice.append(notice_str)
+				else:
+					today_ = str(datetime.today().year)[2:] + "." + str(datetime.today().month) + "."
+					if len(str(datetime.today().day)) == 1:
+						today_ += "0" + str(datetime.today().day)
+					else:
+						today_ += str(datetime.today().day)
+					if today_ in nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip():
+						notice_str = f'{nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip()}-{nc.select_one("td.b-td-left > div.b-title-box > a").text.strip()}'
+						notice.append(notice_str)
+						today_notice_count += 1
+			except AttributeError:
+				continue
+
+	if today_notice_count == 0:
+		notice.append("오늘날짜로 공지된 공지사항이 없습니다.")
+
+	await ctx.send('\n'.join(notice))
+
+@bot.command(aliases=['사업단공지사항', '사업단공지', '사업단망해라'])
+async def university_saupdan_info(ctx):
+	notice = list(); today_notice_count = 0
+	for offset in [0, 10, 20, 30, 40, 50]:
+		req = requests.get(f'https://computer.cnu.ac.kr/computer/notice/project.do?mode=list&&articleLimit=10&article.offset={offset}')
+		html = req.text
+		soup = bs(html, "lxml")
+	
+		noticeContents = soup.select("tbody > tr")
+		for nc in noticeContents:
+			try:
+				if "공" in nc.select_one("td.b-num-box").text.strip():
+					notice_str = f'[공지] {nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip()}-{nc.select_one("td.b-td-left > div.b-title-box > a").text.strip()}'
+					if notice_str not in notice:
+						notice.append(notice_str)
+				else:
+					today_ = str(datetime.today().year)[2:] + "." + str(datetime.today().month) + "."
+					if len(str(datetime.today().day)) == 1:
+						today_ += "0" + str(datetime.today().day)
+					else:
+						today_ += str(datetime.today().day)
+					if today_ in nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip():
+						notice_str = f'{nc.select_one("td.b-td-left > div.b-title-box > div.b-m-con > span.b-date").text.strip()}-{nc.select_one("td.b-td-left > div.b-title-box > a").text.strip()}'
+						notice.append(notice_str)
+						today_notice_count += 1
+			except AttributeError:
+				continue
+
+	if today_notice_count == 0:
+		notice.append("오늘날짜로 공지된 공지사항이 없습니다.")
+
+	await ctx.send('\n'.join(notice))
+
+bot.run('ODcyMTUxMzQzODM2NTY1NTI0.YQlsPA.0WC-wOQDCfThOsMkILkoX_S0gkA')
