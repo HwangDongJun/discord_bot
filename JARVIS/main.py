@@ -152,4 +152,4 @@ async def university_saupdan_info(ctx):
 
 	await ctx.send('\n'.join(notice))
 
-bot.run('ODcyMTUxMzQzODM2NTY1NTI0.YQlsPA.0WC-wOQDCfThOsMkILkoX_S0gkA')
+bot.run('access token')
